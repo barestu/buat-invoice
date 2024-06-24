@@ -2,8 +2,10 @@ import { useContext, useMemo } from 'react';
 import domtoimage from 'dom-to-image';
 import { PrinterIcon } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
+import { toast } from 'sonner';
 
-import { Button } from '../components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -11,13 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../components/ui/table';
+} from '@/components/ui/table';
 import { LocalDataContext, useSelectInvoice } from '@/context/local-data';
-import { formatPrice } from '@/lib/utils';
-import { format } from 'date-fns';
 import NotFound from '@/components/not-found';
 import { Card, CardContent } from '@/components/ui/card';
-import { toast } from 'sonner';
+import { formatPrice } from '@/lib/utils';
 
 function PreviewPage() {
   const params = useParams();

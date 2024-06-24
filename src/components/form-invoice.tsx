@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
 import { Invoice, invoiceSchema } from '@/lib/schemas';
-import { DataContext } from '@/context/data';
+import { LocalDataContext } from '@/context/local-data';
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ import { Button } from './ui/button';
 
 export default function FormCreate() {
   const navigate = useNavigate();
-  const { saveInvoice } = useContext(DataContext);
+  const { saveInvoice } = useContext(LocalDataContext);
 
   const form = useForm<Invoice>({
     resolver: zodResolver(invoiceSchema),

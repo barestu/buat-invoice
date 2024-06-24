@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
 import { Profile, profileSchema } from '@/lib/schemas';
-import { DataContext } from '@/context/data';
+import { LocalDataContext } from '@/context/local-data';
 import {
   Form,
   FormControl,
@@ -26,7 +26,7 @@ import {
 import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
 export default function FormProfile() {
-  const { profile, saveProfile } = useContext(DataContext);
+  const { profile, saveProfile } = useContext(LocalDataContext);
 
   const form = useForm<Profile>({
     resolver: zodResolver(profileSchema),
