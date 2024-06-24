@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '../components/ui/table';
-import { DataContext, useSelectInvoice } from '@/context/data';
+import { LocalDataContext, useSelectInvoice } from '@/context/local-data';
 import { formatPrice } from '@/lib/utils';
 import { format } from 'date-fns';
 import NotFound from '@/components/not-found';
@@ -21,9 +21,10 @@ import { toast } from 'sonner';
 
 function PreviewPage() {
   const params = useParams();
-  const { profile } = useContext(DataContext);
+  const { profile } = useContext(LocalDataContext);
   const invoice = useSelectInvoice(params.code);
 
+  // TODO: fix report on mobile broken display
   const handleExport = async () => {
     try {
       const node = document.getElementById('printArea');
@@ -45,7 +46,7 @@ function PreviewPage() {
         .map((item) => item.price * item.qty)
         .reduce((a, b) => a + b, 0) ?? 0
     );
-  }, [invoice?.items]);
+  }, [invoice]);
 
   const grandTotal = useMemo(() => {
     return (

@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { DataProvider } from './context/data';
+import { LocalDataProvider } from './context/local-data';
 import { Toaster } from './components/ui/sonner';
 import HomePage from './pages/home';
 import PreviewPage from './pages/preview';
@@ -29,11 +29,12 @@ const router = createBrowserRouter([
   },
 ]);
 
+// TODO: adjust overall app language to ID
 export default function App() {
   return (
-    <DataProvider>
+    <LocalDataProvider>
       <RouterProvider router={router} />
       <Toaster />
-    </DataProvider>
+    </LocalDataProvider>
   );
 }

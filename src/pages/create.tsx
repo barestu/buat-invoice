@@ -1,5 +1,5 @@
 import FormProfile from '@/components/form-profile';
-import FormInvoice from '../components/form-invoice';
+import FormInvoice from '@/components/form-invoice';
 
 export default function CreatePage() {
   return (

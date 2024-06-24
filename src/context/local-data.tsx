@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Invoice, Profile } from '@/lib/schemas';
 
-interface IDataContext {
+interface ILocalDataContext {
   profile?: Profile | null;
   invoices?: Record<string, Invoice>;
   saveProfile: (values: Profile) => void;
@@ -11,14 +11,14 @@ interface IDataContext {
 const PROFILE_KEY = 'key_profile';
 const INVOICES_KEY = 'key_invoices';
 
-export const DataContext = createContext<IDataContext>({
+export const LocalDataContext = createContext<ILocalDataContext>({
   profile: null,
   invoices: {},
   saveProfile: () => {},
   saveInvoice: () => {},
 });
 
-export const DataProvider = ({ children }: React.PropsWithChildren) => {
+export const LocalDataProvider = ({ children }: React.PropsWithChildren) => {
   const [profile, setProfile] = useState<Profile>();
   const [invoices, setInvoices] = useState<Record<string, Invoice>>({});
 
@@ -41,7 +41,7 @@ export const DataProvider = ({ children }: React.PropsWithChildren) => {
   };
 
   return (
-    <DataContext.Provider
+    <LocalDataContext.Provider
       value={{
         profile,
         invoices,
@@ -50,12 +50,12 @@ export const DataProvider = ({ children }: React.PropsWithChildren) => {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </LocalDataContext.Provider>
   );
 };
 
 export const useSelectInvoice = (code?: string) => {
-  const { invoices } = useContext(DataContext);
+  const { invoices } = useContext(LocalDataContext);
   if (code && invoices) return invoices[code];
   return null;
 };
