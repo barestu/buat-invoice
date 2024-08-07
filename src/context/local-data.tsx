@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Invoice, Profile } from '@/lib/schemas';
 
 interface ILocalDataContext {
@@ -52,10 +52,4 @@ export const LocalDataProvider = ({ children }: React.PropsWithChildren) => {
       {children}
     </LocalDataContext.Provider>
   );
-};
-
-export const useSelectInvoice = (code?: string) => {
-  const { invoices } = useContext(LocalDataContext);
-  if (code && invoices) return invoices[code];
-  return null;
 };

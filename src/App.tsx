@@ -4,6 +4,7 @@ import { LocalDataProvider } from './context/local-data';
 import { Toaster } from './components/ui/sonner';
 import DefaultLayout from './components/layout/default';
 import NotFound from './components/not-found';
+import Error from './components/error';
 
 import HomePage from './pages/home';
 import PreviewPage from './pages/preview';
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <DefaultLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: '',
