@@ -1,37 +1,7 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { LocalDataProvider } from './context/local-data';
-
 import { Toaster } from './components/ui/sonner';
-import DefaultLayout from './components/layout/default';
-import NotFound from './components/not-found';
-import Error from './components/error';
-
-import HomePage from './pages/home';
-import PreviewPage from './pages/preview';
-import CreatePage from './pages/create';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <DefaultLayout />,
-    errorElement: <Error />,
-    children: [
-      {
-        path: '',
-        element: <HomePage />,
-      },
-      {
-        path: 'create',
-        element: <CreatePage />,
-      },
-    ],
-  },
-  {
-    path: '/preview/:code',
-    element: <PreviewPage />,
-    errorElement: <NotFound />,
-  },
-]);
+import { router } from './router';
 
 // TODO: adjust overall app language to ID
 export default function App() {
