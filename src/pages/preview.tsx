@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import domtoimage from 'dom-to-image';
 import { PrinterIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
@@ -17,13 +17,15 @@ import {
 } from '@/components/ui/table';
 import NotFound from '@/components/not-found';
 import { Card, CardContent } from '@/components/ui/card';
-import { useProfile } from '@/hooks/use-profile';
+import { LocalDataContext } from '@/context/local-data';
 import { useInvoiceDetails } from '@/hooks/use-invoice-details';
 import { formatPrice } from '@/lib/utils';
 
+const VIEWPORT_WIDTH = 500;
+
 function PreviewPage() {
   const params = useParams();
-  const profile = useProfile();
+  const { profile } = useContext(LocalDataContext);
   const invoice = useInvoiceDetails(params.code);
 
   const subTotal = useMemo(() => {
@@ -43,7 +45,7 @@ function PreviewPage() {
   useEffect(() => {
     document
       .querySelector('meta[name="viewport"]')
-      ?.setAttribute('content', 'width=500px');
+      ?.setAttribute('content', `width=${VIEWPORT_WIDTH}px`);
     return () => {
       document
         .querySelector('meta[name="viewport"]')
@@ -58,7 +60,7 @@ function PreviewPage() {
       const result = await domtoimage.toPng(node!);
       const link = document.createElement('a');
       link.href = result;
-      link.download = `INV-${invoice.code}.png`; 
+      link.download = `INV-${invoice.code}.png`;
       link.click();
       toast.success('Invoice printed! Please check your Downloads folder');
     } catch (error) {
