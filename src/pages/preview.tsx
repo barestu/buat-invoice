@@ -1,9 +1,10 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import domtoimage from 'dom-to-image';
 import { PrinterIcon } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { Helmet } from 'react-helmet';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +25,31 @@ function PreviewPage() {
   const { profile } = useContext(LocalDataContext);
   const invoice = useSelectInvoice(params.code);
 
-  // TODO: fix report on mobile broken display
+  const subTotal = useMemo(() => {
+    return (
+      invoice?.items
+        .map((item) => item.price * item.qty)
+        .reduce((a, b) => a + b, 0) ?? 0
+    );
+  }, [invoice]);
+
+  const grandTotal = useMemo(() => {
+    return (
+      subTotal + (invoice?.shipmentPrice ?? 0) + (invoice?.packingPrice ?? 0)
+    );
+  }, [subTotal, invoice]);
+
+  useEffect(() => {
+    document
+      .querySelector('meta[name="viewport"]')
+      ?.setAttribute('content', 'width=500px');
+    return () => {
+      document
+        .querySelector('meta[name="viewport"]')
+        ?.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    };
+  }, []);
+
   const handleExport = async () => {
     try {
       const node = document.getElementById('printArea');
@@ -40,26 +65,27 @@ function PreviewPage() {
     }
   };
 
-  const subTotal = useMemo(() => {
-    return (
-      invoice?.items
-        .map((item) => item.price * item.qty)
-        .reduce((a, b) => a + b, 0) ?? 0
-    );
-  }, [invoice]);
-
-  const grandTotal = useMemo(() => {
-    return (
-      subTotal + (invoice?.shipmentPrice ?? 0) + (invoice?.packingPrice ?? 0)
-    );
-  }, [subTotal, invoice]);
-
   if (!invoice) {
     return <NotFound />;
   }
 
   return (
-    <div className="container p-2 md:p-8">
+    <div className="container p-2 md:p-8 md:max-w-2xl">
+      <Helmet>
+        <title>{`INV-${invoice.code}`}</title>
+        <meta name="description" content="Invoice preview" />
+      </Helmet>
+
+      <div className="flex justify-end gap-2 mt-3 mb-4">
+        <Button variant="link" asChild>
+          <Link to="/">Back to Home</Link>
+        </Button>
+        <Button variant="default" onClick={handleExport}>
+          <PrinterIcon size={20} className="mr-2" />
+          Export
+        </Button>
+      </div>
+
       <Card className="mb-4">
         <CardContent className="p-4">
           <div className="border border-dashed rounded-md">
@@ -173,13 +199,6 @@ function PreviewPage() {
           </div>
         </CardContent>
       </Card>
-
-      <div className="flex flex-col space-y-3">
-        <Button variant="default" onClick={handleExport}>
-          <PrinterIcon size={20} className="mr-2" />
-          Export
-        </Button>
-      </div>
     </div>
   );
 }
