@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Button } from '../ui/button';
 import { PlusCircleIcon } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export default function DefaultLayout() {
   return (
