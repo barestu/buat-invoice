@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
 import { Profile, profileSchema } from '@/lib/schemas';
 import { LocalDataContext } from '@/context/local-data';
@@ -23,7 +24,6 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
-import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
 export default function FormProfile() {
   const { profile, saveProfile } = useContext(LocalDataContext);
@@ -91,9 +91,43 @@ export default function FormProfile() {
                 <FormItem>
                   <FormLabel>Company Logo</FormLabel>
                   <FormControl>
-                    <Input type="file" {...field} />
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files?.length) {
+                          const file = e.target.files[0];
+                          const reader = new FileReader();
+                          reader.readAsDataURL(file);
+                          reader.onloadend = (e) => {
+                            if (e.target?.result) {
+                              field.onChange(e.target.result);
+                            }
+                          };
+                        }
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
+
+                  {form.getValues('companyLogo') && (
+                    <div className="flex flex-col justify-center items-center">
+                      <img
+                        className="w-32 object-contain"
+                        src={form.getValues('companyLogo')}
+                        alt="Company logo preview"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => form.setValue('companyLogo', '')}
+                      >
+                        <Trash2Icon size={16} className="mr-2" />
+                        Remove logo
+                      </Button>
+                    </div>
+                  )}
                 </FormItem>
               )}
             />
