@@ -96,8 +96,17 @@ function PreviewPage() {
             <div className="border border-dashed rounded-md">
               <div id="printArea" className="p-4 bg-white">
                 <div className="mb-4 text-right flex justify-between items-center">
-                  <div className="text-sm md:text-xl font-bold">
-                    {profile?.companyName}
+                  <div className="flex items-center gap-2">
+                    {profile?.companyLogo && (
+                      <img
+                        className="w-10 object-contain"
+                        src={profile?.companyLogo}
+                        alt="Company logo"
+                      />
+                    )}
+                    <div className="text-sm md:text-xl font-bold">
+                      {profile?.companyName}
+                    </div>
                   </div>
                   <h1 className="text-xl md:text-5xl font-bold">Invoice</h1>
                 </div>
