@@ -1,13 +1,13 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 export default function DefaultLayout() {
   return (
     <div id="defaultLayout" className="bg-gray-100 min-h-screen">
       <header className="fixed z-50 w-full">
-        <div className="px-2 py-2 h-16 bg-white shadow-md flex items-center justify-between">
-          <div className="container">
+        <div className="px-4 md:px-8 py-2 h-16 bg-white shadow-md flex items-center justify-between">
+          <Link to="/">
             <h1 className="font-bold">Buat Invoice</h1>
-          </div>
+          </Link>
         </div>
       </header>
 

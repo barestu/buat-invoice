@@ -6,10 +6,12 @@ import RecentInvoices from '@/components/recent-invoices';
 // TODO: add apps menu
 export default function HomePage() {
   return (
-    <div className="relative container bg-white min-h-[calc(100vh-64px-58px)] p-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Buat Invoice</h1>
-        <p className="text-sm mb-4">
+    <div className="relative bg-white min-h-[calc(100vh-64px-58px)] py-4">
+      <section className="px-4 md:px-8 mb-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-1">Buat Invoice</h1>
+        </div>
+        <p className="text-sm mb-2">
           Create invoice for your customers and clients.
         </p>
         <Button asChild>
@@ -17,12 +19,19 @@ export default function HomePage() {
             <PlusCircleIcon className="mr-2" size={20} /> Get Started
           </Link>
         </Button>
-      </div>
+      </section>
 
-      <RecentInvoices />
+      <section className="mb-6">
+        <div className="px-4 md:px-8">
+          <h2 className="font-bold text-lg mb-2">Recent Invoices</h2>
+        </div>
+        <RecentInvoices />
+      </section>
 
-      <div className="mb-4">
-        <h2 className="font-bold text-lg mb-2">Need Help?</h2>
+      <section className="px-4 md:px-8 mb-6">
+        <div>
+          <h2 className="font-bold text-lg mb-2">Need Help?</h2>
+        </div>
         <Button variant="outline" asChild>
           <a
             href="mailto:barestu.fandy@gmail.com?subject=Ask Buat Invoice"
@@ -32,7 +41,7 @@ export default function HomePage() {
             <MailIcon className="mr-2" size={20} /> Contact Us
           </a>
         </Button>
-      </div>
+      </section>
     </div>
   );
 }
