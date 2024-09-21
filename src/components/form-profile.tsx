@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray } from 'react-hook-form';
 import { toast } from 'sonner';
 import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
-import { Profile, profileSchema } from '@/lib/schemas';
+import { Profile } from '@/lib/schemas';
+import { FormGroupContext } from '@/context/form-group';
 import { LocalDataContext } from '@/context/local-data';
 import {
   Form,
@@ -27,21 +27,7 @@ import {
 
 export default function FormProfile() {
   const { profile, saveProfile } = useContext(LocalDataContext);
-
-  const form = useForm<Profile>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      companyName: '',
-      companyLogo: '',
-      banks: [
-        {
-          name: '',
-          accountName: '',
-          accountNo: '',
-        },
-      ],
-    },
-  });
+  const { formProfile: form } = useContext(FormGroupContext);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -113,7 +99,7 @@ export default function FormProfile() {
                   {form.getValues('companyLogo') && (
                     <div className="flex flex-col justify-center items-center">
                       <img
-                        className="w-32 object-contain"
+                        className="w-32 object-contain mb-2"
                         src={form.getValues('companyLogo')}
                         alt="Company logo preview"
                       />

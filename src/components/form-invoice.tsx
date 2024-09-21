@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
-import { Invoice, invoiceSchema } from '@/lib/schemas';
+import { Invoice } from '@/lib/schemas';
+import { FormGroupContext } from '@/context/form-group';
 import { LocalDataContext } from '@/context/local-data';
 import {
   Card,
@@ -21,21 +21,8 @@ import { Button } from './ui/button';
 
 export default function FormCreate() {
   const navigate = useNavigate();
-  const { saveInvoice } = useContext(LocalDataContext);
-
-  const form = useForm<Invoice>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: {
-      code: Date.now().toString(),
-      issuedAt: new Date(),
-      receiverName: '',
-      receiverPhone: '',
-      receiverAddress: '',
-      items: [{ name: '', qty: 1, price: 0 }],
-      shipmentPrice: 0,
-      packingPrice: 0,
-    },
-  });
+  const { saveInvoice, saveProfile } = useContext(LocalDataContext);
+  const { formInvoice: form, formProfile } = useContext(FormGroupContext);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -43,6 +30,7 @@ export default function FormCreate() {
   });
 
   const onSubmit = (values: Invoice) => {
+    saveProfile(formProfile.getValues());
     saveInvoice(values);
     toast.success('Invoice created!');
     navigate(`/preview/${values.code}`);

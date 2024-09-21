@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import domtoimage from 'dom-to-image';
 import { ArrowLeftIcon, DownloadIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table';
 import NotFound from '@/components/not-found';
 import { Card, CardContent } from '@/components/ui/card';
-import { LocalDataContext } from '@/context/local-data';
+import { useProfile } from '@/hooks/use-profile';
 import { useInvoiceDetails } from '@/hooks/use-invoice-details';
 import { formatPrice } from '@/lib/utils';
 
@@ -25,23 +25,17 @@ const VIEWPORT_WIDTH = 576;
 
 function PreviewPage() {
   const params = useParams();
-  const { profile } = useContext(LocalDataContext);
-  const printAreaRef = useRef<HTMLDivElement>(null);
+  const profile = useProfile();
   const invoice = useInvoiceDetails(params.code);
+  const printAreaRef = useRef<HTMLDivElement>(null);
 
-  const subTotal = useMemo(() => {
-    return (
-      invoice?.items
-        .map((item) => item.price * item.qty)
-        .reduce((a, b) => a + b, 0) ?? 0
-    );
-  }, [invoice]);
+  const subTotal =
+    invoice?.items
+      .map((item) => item.price * item.qty)
+      .reduce((a, b) => a + b, 0) ?? 0;
 
-  const grandTotal = useMemo(() => {
-    return (
-      subTotal + (invoice?.shipmentPrice ?? 0) + (invoice?.packingPrice ?? 0)
-    );
-  }, [subTotal, invoice]);
+  const grandTotal =
+    subTotal + (invoice?.shipmentPrice ?? 0) + (invoice?.packingPrice ?? 0);
 
   useEffect(() => {
     document

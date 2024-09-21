@@ -3,7 +3,6 @@ import { PlusCircleIcon, MailIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RecentInvoices from '@/components/recent-invoices';
 
-// TODO: add apps menu
 export default function HomePage() {
   return (
     <div className="relative bg-white min-h-[calc(100vh-64px-58px)] py-4">
