@@ -144,10 +144,17 @@ function PreviewPage() {
                 <Table className="mb-8">
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[60%]">Nama Produk</TableHead>
-                      <TableHead className="text-center">Jumlah</TableHead>
-                      <TableHead className="text-right">Harga</TableHead>
-                      <TableHead className="text-right">Total Harga</TableHead>
+                      <TableHead className="bg-green-800 w-[60%]">
+                        Nama Produk
+                      </TableHead>
+                      <TableHead className="bg-green-800 text-center">
+                        Jumlah
+                      </TableHead>
+                      <TableHead className="bg-green-800 text-right">
+                        Harga
+                      </TableHead>
+                      <TableHead className="bg-green-800 text-right">
+                        Total Harga
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -200,7 +207,7 @@ function PreviewPage() {
                       </TableRow>
                     )}
 
-                    <TableRow className="bg-yellow-300 hover:bg-yellow-300">
+                    <TableRow className="bg-green-700/20">
                       <TableCell className="text-right font-bold" colSpan={3}>
                         Grand Total
                       </TableCell>
