@@ -40,7 +40,7 @@ function PreviewPage() {
   useEffect(() => {
     document
       .querySelector('meta[name="viewport"]')
-      ?.setAttribute('content', `width=${VIEWPORT_WIDTH}px`);
+      ?.setAttribute('content', `width=${VIEWPORT_WIDTH}`);
     return () => {
       document
         .querySelector('meta[name="viewport"]')
