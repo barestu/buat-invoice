@@ -14,7 +14,7 @@ export default function RecentInvoices() {
       )}
 
       {invoices.length > 0 && (
-        <div className="flex overflow-y-auto gap-3">
+        <div className="flex overflow-y-auto gap-3 no-scrollbar">
           {invoices.map((invoice) => (
             <Link
               key={invoice.code}
