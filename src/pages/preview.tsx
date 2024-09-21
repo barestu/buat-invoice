@@ -1,6 +1,6 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import domtoimage from 'dom-to-image';
-import { PrinterIcon } from 'lucide-react';
+import { ArrowLeftIcon, DownloadIcon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -21,11 +21,12 @@ import { LocalDataContext } from '@/context/local-data';
 import { useInvoiceDetails } from '@/hooks/use-invoice-details';
 import { formatPrice } from '@/lib/utils';
 
-const VIEWPORT_WIDTH = 500;
+const VIEWPORT_WIDTH = 576;
 
 function PreviewPage() {
   const params = useParams();
   const { profile } = useContext(LocalDataContext);
+  const printAreaRef = useRef<HTMLDivElement>(null);
   const invoice = useInvoiceDetails(params.code);
 
   const subTotal = useMemo(() => {
@@ -53,14 +54,21 @@ function PreviewPage() {
     };
   }, []);
 
-  const handleExport = async () => {
-    if (!invoice) return;
+  const handleDownload = async () => {
     try {
-      const node = document.getElementById('printArea');
-      const result = await domtoimage.toPng(node!);
+      const node = printAreaRef.current!;
+      const scale = 2;
+      const result = await domtoimage.toPng(node, {
+        width: node.clientWidth * scale,
+        height: node.clientHeight * scale * 1.5,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left',
+        },
+      });
       const link = document.createElement('a');
       link.href = result;
-      link.download = `INV-${invoice.code}.png`;
+      link.download = `INV-${invoice!.code}.png`;
       link.click();
       toast.success('Invoice printed! Please check your Downloads folder');
     } catch (error) {
@@ -75,26 +83,30 @@ function PreviewPage() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="container p-2 md:p-8 md:max-w-2xl">
+      <div className="mx-auto p-2 max-w-xl">
         <Helmet>
           <title>{`INV-${invoice.code}`}</title>
           <meta name="description" content="Invoice preview" />
         </Helmet>
 
         <div className="flex justify-end gap-2 mt-3 mb-4">
-          <Button variant="link" asChild>
-            <Link to="/">Back to Home</Link>
+          <Button variant="outline" asChild>
+            <Link to="/">
+              <ArrowLeftIcon size={20} className="mr-2" />
+              Back to Home
+            </Link>
           </Button>
-          <Button variant="default" onClick={handleExport}>
-            <PrinterIcon size={20} className="mr-2" />
-            Export
+          <div className="w-full"></div>
+          <Button variant="default" onClick={handleDownload}>
+            <DownloadIcon size={20} className="mr-2" />
+            Download
           </Button>
         </div>
 
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="border border-dashed rounded-md">
-              <div id="printArea" className="p-4 bg-white">
+              <div ref={printAreaRef} className="p-4 bg-white">
                 <div className="mb-4 text-right flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     {profile?.companyLogo && (
@@ -104,11 +116,11 @@ function PreviewPage() {
                         alt="Company logo"
                       />
                     )}
-                    <div className="text-sm md:text-xl font-bold">
+                    <div className="text-sm font-bold">
                       {profile?.companyName}
                     </div>
                   </div>
-                  <h1 className="text-xl md:text-5xl font-bold">Invoice</h1>
+                  <h1 className="text-5xl font-bold">Invoice</h1>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -136,6 +148,7 @@ function PreviewPage() {
                       <TableHead className="text-center">Jumlah</TableHead>
                       <TableHead className="text-right">Harga</TableHead>
                       <TableHead className="text-right">Total Harga</TableHead>
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
