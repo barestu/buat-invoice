@@ -8,6 +8,7 @@ import NotFound from './components/not-found';
 // Pages
 import HomePage from './pages/home';
 import CreatePage from './pages/create';
+import EditPage from './pages/edit';
 import PreviewPage from './pages/preview';
 
 export const router = createBrowserRouter([
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: 'create',
         element: <CreatePage />,
+      },
+      {
+        path: ':id/edit',
+        element: <EditPage />,
       },
     ],
   },

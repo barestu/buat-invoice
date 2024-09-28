@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import domtoimage from 'dom-to-image';
-import { ArrowLeftIcon, DownloadIcon } from 'lucide-react';
+import { ArrowLeftIcon, DownloadIcon, Edit2Icon } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -84,17 +84,25 @@ function PreviewPage() {
         </Helmet>
 
         <div className="flex justify-end gap-2 mt-3 mb-4">
-          <Button variant="outline" asChild>
+          <Button variant="link" asChild>
             <Link to="/">
               <ArrowLeftIcon size={20} className="mr-2" />
               Back to Home
             </Link>
           </Button>
           <div className="w-full"></div>
-          <Button variant="default" onClick={handleDownload}>
-            <DownloadIcon size={20} className="mr-2" />
-            Download
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" asChild>
+              <Link to={`/${invoice.code}/edit`}>
+                <Edit2Icon size={20} className="mr-2" />
+                Edit
+              </Link>
+            </Button>
+            <Button variant="default" onClick={handleDownload}>
+              <DownloadIcon size={20} className="mr-2" />
+              Download
+            </Button>
+          </div>
         </div>
 
         <Card className="mb-4">

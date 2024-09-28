@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { Invoice } from '@/lib/schemas';
@@ -26,11 +26,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
+import { useInvoiceDetails } from '@/hooks/use-invoice-details';
 
 export default function FormCreate() {
   const navigate = useNavigate();
+  const params = useParams();
+
   const { saveInvoice, saveProfile } = useContext(LocalDataContext);
   const { formInvoice: form, formProfile } = useContext(FormGroupContext);
+  const defaultInvoice = useInvoiceDetails(params.id);
   const [showConfirmAutofill, setShowConfirmAutofill] = useState(false);
 
   const { fields, append, remove } = useFieldArray({
@@ -39,6 +43,20 @@ export default function FormCreate() {
   });
 
   const clipboardValue = form.watch('receiverName').toLowerCase();
+
+  // If edit invoice, prefill form with default invoice data
+  useEffect(() => {
+    if (defaultInvoice) {
+      form.setValue('receiverName', defaultInvoice.receiverName);
+      form.setValue('receiverPhone', defaultInvoice.receiverPhone);
+      form.setValue('receiverAddress', defaultInvoice.receiverAddress);
+      form.setValue('shipmentPrice', defaultInvoice.shipmentPrice);
+      form.setValue('packingPrice', defaultInvoice.packingPrice);
+      form.setValue('issuedAt', new Date());
+      form.setValue('code', defaultInvoice.code);
+      form.setValue('items', defaultInvoice.items);
+    }
+  }, [form, defaultInvoice]);
 
   // Detect prefilled form value from clipboard
   useEffect(() => {
