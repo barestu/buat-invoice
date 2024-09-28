@@ -51,6 +51,13 @@ export default function FormCreate() {
     }
   }, [clipboardValue]);
 
+  const cleanPriceInput = (value: string) => {
+    if (value.length > 1 && value[0] === '0') {
+      return value.slice(1);
+    }
+    return value;
+  };
+
   const handleAutofill = () => {
     const splitValue = clipboardValue.split(' ');
 
@@ -209,7 +216,16 @@ export default function FormCreate() {
                             <FormItem>
                               <FormLabel>Price (Rp.)</FormLabel>
                               <FormControl>
-                                <Input placeholder="Price" {...field} />
+                                <Input
+                                  placeholder="Price"
+                                  type="number"
+                                  {...field}
+                                  onChange={(e) => {
+                                    field.onChange(
+                                      cleanPriceInput(e.target.value)
+                                    );
+                                  }}
+                                />
                               </FormControl>
                             </FormItem>
                           )}
@@ -248,7 +264,14 @@ export default function FormCreate() {
                   <FormItem>
                     <FormLabel>Shipment Price (Rp.)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Shipment Price" {...field} />
+                      <Input
+                        placeholder="Shipment Price"
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(cleanPriceInput(e.target.value));
+                        }}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -261,7 +284,14 @@ export default function FormCreate() {
                   <FormItem>
                     <FormLabel>Packing Price (Rp.)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Packing Price" {...field} />
+                      <Input
+                        placeholder="Packing Price"
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(cleanPriceInput(e.target.value));
+                        }}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
