@@ -100,7 +100,7 @@ export default function FormCreate() {
               <span className="italic">{clipboardValue}</span>
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="gap-3">
             <Button
               variant="outline"
               onClick={() => setShowConfirmAutofill(false)}
