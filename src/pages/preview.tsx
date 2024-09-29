@@ -76,169 +76,177 @@ function PreviewPage() {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="mx-auto p-2 max-w-xl">
-        <Helmet>
-          <title>{`INV-${invoice.code}`}</title>
-          <meta name="description" content="Invoice preview" />
-        </Helmet>
+    <>
+      <Helmet>
+        <title>{`INV-${invoice.code}`}</title>
+        <meta name="description" content="Invoice preview" />
+      </Helmet>
 
-        <div className="flex justify-end gap-2 mt-3 mb-4">
-          <Button variant="link" asChild>
-            <Link to="/">
-              <ArrowLeftIcon size={20} className="mr-2" />
-              Back to Home
-            </Link>
-          </Button>
-          <div className="w-full"></div>
-          <div className="flex gap-2">
-            <Button variant="outline" asChild>
-              <Link to={`/${invoice.code}/edit`}>
-                <Edit2Icon size={20} className="mr-2" />
-                Edit
+      <div className="bg-gray-100 min-h-screen">
+        <div className="mx-auto p-2 max-w-xl">
+          <div className="flex justify-end gap-2 mt-3 mb-4">
+            <Button variant="link" asChild>
+              <Link to="/">
+                <ArrowLeftIcon size={20} className="mr-2" />
+                Back to Home
               </Link>
             </Button>
-            <Button variant="default" onClick={handleDownload}>
-              <DownloadIcon size={20} className="mr-2" />
-              Download
-            </Button>
+            <div className="w-full"></div>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild>
+                <Link to={`/${invoice.code}/edit`}>
+                  <Edit2Icon size={20} className="mr-2" />
+                  Edit
+                </Link>
+              </Button>
+              <Button variant="default" onClick={handleDownload}>
+                <DownloadIcon size={20} className="mr-2" />
+                Download
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="border border-dashed rounded-md">
-              <div ref={printAreaRef} className="p-4 bg-white">
-                <div className="mb-4 text-right flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    {profile?.companyLogo && (
-                      <img
-                        className="w-10 object-contain"
-                        src={profile?.companyLogo}
-                        alt="Company logo"
-                      />
-                    )}
-                    <div className="text-sm font-bold">
-                      {profile?.companyName}
+          <Card className="mb-4">
+            <CardContent className="p-4">
+              <div className="border border-dashed rounded-md">
+                <div ref={printAreaRef} className="p-4 bg-white">
+                  <div className="mb-4 text-right flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      {profile?.companyLogo && (
+                        <img
+                          className="w-10 object-contain"
+                          src={profile?.companyLogo}
+                          alt="Company logo"
+                        />
+                      )}
+                      <div className="text-sm font-bold">
+                        {profile?.companyName}
+                      </div>
+                    </div>
+                    <h1 className="text-5xl font-bold">Invoice</h1>
+                  </div>
+
+                  <div className="flex justify-between items-center">
+                    <div className="mb-4">
+                      <h3 className="text-lg font-bold">Kepada</h3>
+                      <div>
+                        <p className="text-sm">{invoice.receiverName}</p>
+                        <p className="text-sm">{invoice.receiverAddress}</p>
+                        <p className="text-sm">{invoice.receiverPhone}</p>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-right">INV-{invoice.code}</p>
+                      <p className="text-sm text-right">
+                        {format(invoice.issuedAt, 'dd MMM yyyy')}
+                      </p>
                     </div>
                   </div>
-                  <h1 className="text-5xl font-bold">Invoice</h1>
-                </div>
 
-                <div className="flex justify-between items-center">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-bold">Kepada</h3>
-                    <div>
-                      <p className="text-sm">{invoice.receiverName}</p>
-                      <p className="text-sm">{invoice.receiverAddress}</p>
-                      <p className="text-sm">{invoice.receiverPhone}</p>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <p className="text-sm text-right">INV-{invoice.code}</p>
-                    <p className="text-sm text-right">
-                      {format(invoice.issuedAt, 'dd MMM yyyy')}
-                    </p>
-                  </div>
-                </div>
-
-                <Table className="mb-8">
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="bg-green-800 w-[60%]">
-                        Nama Produk
-                      </TableHead>
-                      <TableHead className="bg-green-800 text-center">
-                        Jumlah
-                      </TableHead>
-                      <TableHead className="bg-green-800 text-right">
-                        Harga
-                      </TableHead>
-                      <TableHead className="bg-green-800 text-right">
-                        Total Harga
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {invoice.items.map((item, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell className="border-r-0">
-                          {item.name}
-                        </TableCell>
-                        <TableCell className="border-l-0 border-r-0 text-center">
-                          {item.qty}
-                        </TableCell>
-                        <TableCell className="border-l-0 text-right">
-                          {formatPrice(item.price)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {formatPrice(item.qty * item.price)}
-                        </TableCell>
+                  <Table className="mb-8">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="bg-green-800 w-[60%]">
+                          Nama Produk
+                        </TableHead>
+                        <TableHead className="bg-green-800 text-center">
+                          Jumlah
+                        </TableHead>
+                        <TableHead className="bg-green-800 text-right">
+                          Harga
+                        </TableHead>
+                        <TableHead className="bg-green-800 text-right">
+                          Total Harga
+                        </TableHead>
                       </TableRow>
-                    ))}
+                    </TableHeader>
+                    <TableBody>
+                      {invoice.items.map((item, idx) => (
+                        <TableRow key={idx}>
+                          <TableCell className="border-r-0">
+                            {item.name}
+                          </TableCell>
+                          <TableCell className="border-l-0 border-r-0 text-center">
+                            {item.qty}
+                          </TableCell>
+                          <TableCell className="border-l-0 text-right">
+                            {formatPrice(item.price)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {formatPrice(item.qty * item.price)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
 
-                    <TableRow>
-                      <TableCell className="text-right font-bold" colSpan={3}>
-                        Subtotal harga produk
-                      </TableCell>
-                      <TableCell className="text-right font-bold">
-                        {formatPrice(subTotal)}
-                      </TableCell>
-                    </TableRow>
-
-                    {Boolean(invoice.shipmentPrice) && (
                       <TableRow>
                         <TableCell className="text-right font-bold" colSpan={3}>
-                          Ongkir
+                          Subtotal harga produk
                         </TableCell>
                         <TableCell className="text-right font-bold">
-                          {formatPrice(invoice.shipmentPrice)}
+                          {formatPrice(subTotal)}
                         </TableCell>
                       </TableRow>
-                    )}
 
-                    {Boolean(invoice.packingPrice) && (
-                      <TableRow>
+                      {Boolean(invoice.shipmentPrice) && (
+                        <TableRow>
+                          <TableCell
+                            className="text-right font-bold"
+                            colSpan={3}
+                          >
+                            Ongkir
+                          </TableCell>
+                          <TableCell className="text-right font-bold">
+                            {formatPrice(invoice.shipmentPrice)}
+                          </TableCell>
+                        </TableRow>
+                      )}
+
+                      {Boolean(invoice.packingPrice) && (
+                        <TableRow>
+                          <TableCell
+                            className="text-right font-bold"
+                            colSpan={3}
+                          >
+                            Biaya Packing
+                          </TableCell>
+                          <TableCell className="text-right font-bold">
+                            {formatPrice(invoice.packingPrice)}
+                          </TableCell>
+                        </TableRow>
+                      )}
+
+                      <TableRow className="bg-green-700/20">
                         <TableCell className="text-right font-bold" colSpan={3}>
-                          Biaya Packing
+                          Grand Total
                         </TableCell>
                         <TableCell className="text-right font-bold">
-                          {formatPrice(invoice.packingPrice)}
+                          {formatPrice(grandTotal)}
                         </TableCell>
                       </TableRow>
-                    )}
+                    </TableBody>
+                  </Table>
 
-                    <TableRow className="bg-green-700/20">
-                      <TableCell className="text-right font-bold" colSpan={3}>
-                        Grand Total
-                      </TableCell>
-                      <TableCell className="text-right font-bold">
-                        {formatPrice(grandTotal)}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-
-                <div>
-                  <h3 className="text-lg font-bold mb-1">Rekening</h3>
-                  <ul className="space-y-1">
-                    {profile?.banks.map((bank, idx) => (
-                      <li key={idx}>
-                        <p className="text-sm">{bank.name}</p>
-                        <p className="text-sm">
-                          {bank.accountNo} (a/n {bank.accountName})
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <h3 className="text-lg font-bold mb-1">Rekening</h3>
+                    <ul className="space-y-1">
+                      {profile?.banks.map((bank, idx) => (
+                        <li key={idx}>
+                          <p className="text-sm">{bank.name}</p>
+                          <p className="text-sm">
+                            {bank.accountNo} (a/n {bank.accountName})
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
