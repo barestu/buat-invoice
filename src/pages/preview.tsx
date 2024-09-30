@@ -37,6 +37,8 @@ function PreviewPage() {
   const grandTotal =
     subTotal + (invoice?.shipmentPrice ?? 0) + (invoice?.packingPrice ?? 0);
 
+  // This page viewport is fixed to VIEWPORT_WIDTH=576
+  // so the generated image resolution is the same for all screen size
   useEffect(() => {
     document
       .querySelector('meta[name="viewport"]')
