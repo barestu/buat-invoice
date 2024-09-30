@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { PlusCircleIcon, Trash2Icon } from 'lucide-react';
+import { CircleAlertIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { Invoice } from '@/lib/schemas';
 import { FormGroupContext } from '@/context/form-group';
 import { LocalDataContext } from '@/context/local-data';
+import { useInvoiceDetails } from '@/hooks/use-invoice-details';
 import {
   Card,
   CardContent,
@@ -26,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
-import { useInvoiceDetails } from '@/hooks/use-invoice-details';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 export default function FormCreate() {
   const navigate = useNavigate();
@@ -146,7 +147,28 @@ export default function FormCreate() {
                 name="receiverName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Receiver Name</FormLabel>
+                    <FormLabel className="flex items-center">
+                      Receiver Name
+                      <Popover>
+                        <PopoverTrigger className="ml-1">
+                          <CircleAlertIcon className="w-4 h-4 " />
+                        </PopoverTrigger>
+                        <PopoverContent className="text-sm">
+                          You can use prefilled data from your clipboard to autofill the invoice fields with the format below.
+                          <br />
+                          <br />
+                          <span className="font-semibold">Format:</span>
+                          <br />
+                          <span className="italic">nama: John Doe</span>
+                          <br />
+                          <span className="italic">no hp: 081800800800</span>
+                          <br />
+                          <span className="italic">
+                            alamat: Address of the receiver
+                          </span>
+                        </PopoverContent>
+                      </Popover>
+                    </FormLabel>
                     <FormControl>
                       <Input placeholder="Receiver Name" {...field} />
                     </FormControl>
