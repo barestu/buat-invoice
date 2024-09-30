@@ -77,20 +77,13 @@ export default function FormCreate() {
   };
 
   const handleAutofill = () => {
-    const splitValue = clipboardValue.split(' ');
-
-    const nameIdx = splitValue.indexOf('nama:') + 1;
-    const name = splitValue[nameIdx];
-
-    const phoneIdx = splitValue.indexOf('hp:') + 1;
-    const phone = splitValue[phoneIdx];
-
-    const addressIdx = splitValue.indexOf('alamat:') + 1;
-    const address = splitValue[addressIdx];
-
-    form.setValue('receiverName', name);
-    form.setValue('receiverPhone', phone);
-    form.setValue('receiverAddress', address);
+    const regex = /nama: ([\w\s]+) no hp: (\d+) alamat: ([\w\s\d]+)/i;
+    const matches = clipboardValue.match(regex);
+    if (matches) {
+      form.setValue('receiverName', matches[1]);
+      form.setValue('receiverPhone', matches[2]);
+      form.setValue('receiverAddress', matches[3]);
+    }
   };
 
   const handleCreateInvoice = (values: Invoice) => {
