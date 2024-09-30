@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import FormProfile from '@/components/form-profile';
 import FormInvoice from '@/components/form-invoice';
 import { FormGroupProvider } from '@/context/form-group';
@@ -9,7 +10,9 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
-export default function CreatePage() {
+export default function EditPage() {
+  const params = useParams();
+
   return (
     <div className="container p-0 md:p-8">
       <FormGroupProvider>
@@ -19,7 +22,11 @@ export default function CreatePage() {
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>Create</BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Invoices</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>{`INV-${params.id}`}</BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
